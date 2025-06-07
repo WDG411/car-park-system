@@ -1,6 +1,6 @@
-package com.cgr.vo;
+package com.cgr.entity;
 
-import com.cgr.entity.CPUser;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,20 +22,22 @@ public class LoginUser implements UserDetails {
      */
     private Set<String> roleList;
 
-    private String token;
 
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return user.getPassword();
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return user.getUsername();
     }

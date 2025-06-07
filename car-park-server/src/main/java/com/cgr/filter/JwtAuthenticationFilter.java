@@ -1,4 +1,4 @@
-package com.cgr;
+package com.cgr.filter;
 
 import com.cgr.constant.Constants;
 import com.cgr.entity.LoginUser;
@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //放行 登录相关的请求
         String  url = request.getRequestURI();
-        if (url.contains("/login")||url.contains("/register")) {
+        if (url.contains("/login")||url.contains("/register")||url.contains("/captchaImage")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -75,7 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         //将用户信息存入安全上下文
-        UsernamePasswordAuthenticationToken authentication = UsernamePasswordAuthenticationToken.authenticated(loginUser, null, loginUser.getAuthorities());
+        UsernamePasswordAuthenticationToken authentication = SecurityUtil.tokenAuthenticate(loginUser);
         SecurityUtil.setAuthentication(authentication);
 
         //放行
@@ -95,10 +95,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      */
     private String parseJwt(HttpServletRequest request) {
         // 从请求头中获取 "Authorization" 字段的值
-        String headerAuth = request.getHeader("Authorization");
+        String headerAuth = request.getHeader(Constants.AUTHORIZATION);
 
         // 校验 headerAuth 是否有文本内容，且以 "Bearer " 前缀开头
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(Constants.TOKEN_PREFIX)) {
             // 去掉 "Bearer " 前缀，只保留实际的 JWT 部分
             return headerAuth.substring(7);
         }

@@ -1,2 +1,9 @@
-package com.cgr.service;public interface WebService {
+package com.cgr.service;
+
+
+import com.cgr.ResponseModel;
+import com.cgr.dto.LoginBody;
+
+public interface WebService {
+    ResponseModel login(LoginBody loginBody);
 }

@@ -1,2 +1,14 @@
-package com.cgr.mapper;public interface RoleMapper {
+package com.cgr.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.cgr.entity.CPRole;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface RoleMapper extends BaseMapper<CPRole> {
+    List<String> selectRoleByUserId(Long id);
+
+    List<Long> selectRoleIdsByUserId(Long id);
 }

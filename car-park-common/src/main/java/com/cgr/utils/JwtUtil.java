@@ -1,12 +1,13 @@
 package com.cgr.utils;
 
+import com.cgr.entity.CPUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -19,10 +20,13 @@ public class JwtUtil {
 
     /**
      * 生成JWT令牌
-     * @param claims 令牌中包含的信息
+     * @param user 用户对象
      * @return 生成的JWT令牌字符串
      */
-    public static String generateToken(Map<String, Object> claims) {
+    public static String generateToken(CPUser user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userid", user.getId());
+        claims.put("username", user.getUsername());
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET)
                 .addClaims(claims)

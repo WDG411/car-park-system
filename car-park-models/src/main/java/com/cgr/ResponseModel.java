@@ -1,4 +1,4 @@
-package com.cgr.entity;
+package com.cgr;
 
 public class ResponseModel<T> {
     /**
@@ -31,9 +31,6 @@ public class ResponseModel<T> {
     }
 
 
-    public static ResponseModel<String> authenticatedError(String msg) {
-        return new ResponseModel(402, msg, "好烦啊");
-    }
 
     public int getCode() {
         return code;
