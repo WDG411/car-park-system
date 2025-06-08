@@ -11,4 +11,6 @@ public interface RoleMapper extends BaseMapper<CPRole> {
     List<String> selectRoleByUserId(Long id);
 
     List<Long> selectRoleIdsByUserId(Long id);
+
+    void insertUserRole(Long roleId, Long userId);
 }

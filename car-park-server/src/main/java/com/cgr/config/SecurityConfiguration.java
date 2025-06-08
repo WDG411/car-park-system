@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
-                //.formLogin(formLogin->formLogin.disable());
+                .formLogin(formLogin->formLogin.disable())
                 .addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter.class);
 
         return http.build();

@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginUserVo {
+public class LoginUserVo implements Serializable {
 
     private Long id;
 
@@ -28,7 +29,7 @@ public class LoginUserVo {
     /**
      * 角色列表
      */
-    private Set<String> roleList;
+    private List<String> roleList;
 
     private String token;
 }

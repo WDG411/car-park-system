@@ -5,6 +5,7 @@ import com.cgr.entity.LoginUser;
 import com.cgr.utils.JwtUtil;
 import com.cgr.utils.RedisUtil;
 import com.cgr.utils.SecurityUtil;
+import com.cgr.vo.LoginUserVo;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -62,26 +63,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         //从 redis 中获取用户信息
-        LoginUser loginUser = (LoginUser) redisTemplate.opsForValue().get(key);
+        LoginUserVo loginUserVo =(LoginUserVo) redisTemplate.opsForValue().get(key);
 
-        if(loginUser == null){
+        if(loginUserVo == null){
             //redis数据过期，从数据库从重新获取信息
             String username = claims.get("username", String.class);
-            loginUser = (LoginUser) userDetailsService.loadUserByUsername(username);
-            //throw new BadCredentialsException("redis错误");
+            LoginUser loginUser =  (LoginUser) userDetailsService.loadUserByUsername(username);
 
             //重新存入redis
-            redisUtil.setCacheObject(key, loginUser, Constants.USER_INFO_TTL, TimeUnit.MINUTES);
+            redisUtil.setCacheObject(key, loginUserVo, Constants.USER_INFO_TTL, TimeUnit.MINUTES);
         }
 
+
         //将用户信息存入安全上下文
-        UsernamePasswordAuthenticationToken authentication = SecurityUtil.tokenAuthenticate(loginUser);
+        UsernamePasswordAuthenticationToken authentication =
+                SecurityUtil.tokenAuthenticate(SecurityUtil.getLoginUserFromLoginUserVo(loginUserVo));
         SecurityUtil.setAuthentication(authentication);
 
         //放行
         filterChain.doFilter(request, response);
 
     }
+
+
 
 
     /**

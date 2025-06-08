@@ -1,6 +1,9 @@
 package com.cgr.utils;
 
+import com.cgr.entity.CPUser;
 import com.cgr.entity.LoginUser;
+import com.cgr.vo.LoginUserVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,5 +46,19 @@ public class SecurityUtil {
 
     public static UsernamePasswordAuthenticationToken tokenUnauthenticate(String  username,String  password){
         return UsernamePasswordAuthenticationToken.unauthenticated(username, password);
+    }
+
+
+    public static LoginUserVo getLoginUserVoFromLoginUser(LoginUser loginUser) {
+        CPUser user = loginUser.getUser();
+        LoginUserVo loginUserVo = new LoginUserVo();
+        BeanUtils.copyProperties(user, loginUserVo);
+        return loginUserVo;
+    }
+
+    public static LoginUser getLoginUserFromLoginUserVo(LoginUserVo loginUserVo) {
+        CPUser  user = new CPUser();
+        BeanUtils.copyProperties(loginUserVo, user);
+        return new LoginUser(user, loginUserVo.getRoleList());
     }
 }

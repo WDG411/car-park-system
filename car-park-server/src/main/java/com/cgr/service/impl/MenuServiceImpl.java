@@ -3,6 +3,7 @@ package com.cgr.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cgr.entity.CPMenu;
 import com.cgr.mapper.MenuMapper;
+import com.cgr.mapper.RoleMapper;
 import com.cgr.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, CPMenu> implements MenuService {
+
     @Autowired
     private MenuMapper menuMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     /**
      * 将菜单数据构建成树形结构
@@ -47,7 +51,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, CPMenu> implements 
 
     @Override
     public List<CPMenu> selectMenuTreeByUserId(Long userId) {
-        return null;
+        List<Long> roleIds = roleMapper.selectRoleIdsByUserId(userId);
+
+        List<Long> menuIds = menuMapper.selectMenuIdsByRoleIds(roleIds);
+
+        List<CPMenu> menuList = menuMapper.selectMenusByMenuIds(menuIds);
+
+        return buildMenuTree(menuList);
     }
 
     private List<CPMenu> getMenuListByUserId(Long userId) {

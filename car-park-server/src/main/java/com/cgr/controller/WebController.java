@@ -32,7 +32,12 @@ public class WebController {
         return webService.login(loginBody);
     }
 
-    @GetMapping("getRouters")
+    @PostMapping("/register")
+    public ResponseModel register(@RequestBody LoginBody loginBody){
+        return webService.addUser(loginBody);
+    }
+
+    @GetMapping("/getRouters")
     public ResponseModel getRouters()
     {
         Long userId = SecurityUtil.getLoginUser().getUser().getId();

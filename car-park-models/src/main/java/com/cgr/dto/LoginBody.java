@@ -13,5 +13,15 @@ public class LoginBody {
 
     private String password;
 
+    private String email;
+
+    private String sex;
+
+    private String nickName;
+
+    private String avatar;
+
+    private String phone;
+
     private String code;
 }
