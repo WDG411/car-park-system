@@ -26,8 +26,26 @@ public class ResponseModel<T> {
         return new ResponseModel<T>(200, "success", data);
     }
 
+    public static <T> ResponseModel<T> success() {
+        return new ResponseModel<T>(200, "success", null);
+    }
+
     public static <T> ResponseModel<T> error(T data) {
         return new ResponseModel<T>(401, "error", data);
+    }
+
+    public static <T> ResponseModel<T> error(){
+        return new ResponseModel<T>(500, "error", null);
+    }
+
+    public static <T> ResponseModel<T> error(int code, String msg){
+        return new ResponseModel<T>(code, "msg", null);
+    }
+
+
+    public static <T> ResponseModel<T> error(String msg) {
+
+        return new ResponseModel<T>(500, msg, null);
     }
 
 
