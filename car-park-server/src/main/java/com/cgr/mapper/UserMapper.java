@@ -11,4 +11,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<CPUser> {
 
     void deleteBatch(@Param("userIds") List<Long> ids);
+
+    List<CPUser> findCommonUser(CPUser user);
 }

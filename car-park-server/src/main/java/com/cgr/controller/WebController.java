@@ -7,7 +7,6 @@ import com.cgr.service.MenuService;
 import com.cgr.service.WebService;
 import com.cgr.utils.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +17,6 @@ import java.util.List;
 @RestController
 public class WebController {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private WebService webService;

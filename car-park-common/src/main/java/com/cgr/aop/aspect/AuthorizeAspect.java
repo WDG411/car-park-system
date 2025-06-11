@@ -1,4 +1,4 @@
-package com.cgr.aop;
+package com.cgr.aop.aspect;
 
 import com.cgr.aop.annotation.hasRole;
 import com.cgr.entity.LoginUser;

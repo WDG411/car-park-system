@@ -8,7 +8,7 @@ public class Parking {
     /** 主键ID */
     private Integer id;
     /** 用户Id */
-    private Integer userId;
+    private Long userId;
     /** 车辆Id */
     private String vehicleId;
     /** 区域Id */
@@ -34,11 +34,11 @@ public class Parking {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

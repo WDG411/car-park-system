@@ -5,8 +5,8 @@
 <mapper namespace="com.cgr.mapper.ParkingMapper">
 
     <select id="selectAll" resultType="com.cgr.entity.Parking">
-        select parking.*, user.name as userName, vehicle.name as vehicleName, location.name as locationName, parking_lot.name as parkingLotName from parking
-        left join user on parking.user_id = user.id
+        select parking.*, username as userName, vehicle.name as vehicleName, location.name as locationName, parking_lot.name as parkingLotName from parking
+        left join cp_user user on parking.user_id = user.id
         left join vehicle on parking.vehicle_id = vehicle.id
         left join location on parking.location_id = location.id
         left join parking_lot on parking.parking_lot_id = parking_lot.id

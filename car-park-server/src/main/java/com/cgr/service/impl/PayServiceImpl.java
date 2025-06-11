@@ -1,12 +1,18 @@
 package com.cgr.service.impl;
 
+import com.cgr.constant.Role;
+import com.cgr.entity.CPUser;
+import com.cgr.entity.LoginUser;
 import com.cgr.entity.Pay;
+import com.cgr.exception.CustomException;
 import com.cgr.mapper.PayMapper;
+import com.cgr.mapper.UserMapper;
 import com.cgr.service.PayService;
-import com.cgr.service.UserService;
+import com.cgr.utils.SecurityUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +21,8 @@ import java.util.List;
 public class PayServiceImpl implements PayService {
     @Resource
     private PayMapper payMapper;
-    @Resource
-    private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 新增
@@ -45,14 +51,14 @@ public class PayServiceImpl implements PayService {
      * 修改
      */
     public void updateById(Pay pay) {
-        //TODO
-        /*// 查询余额够不够
-        User user = userService.selectById(pay.getUserId());
+        // 查询余额
+        CPUser user = userMapper.selectById(pay.getUserId());
         if (user.getAccount() < pay.getPrice()) {
-            throw new CustomException("500", "您的余额不足，请到个人中心充值");
+            throw new CustomException(500, "您的余额不足，请到个人中心充值");
         }
+
         user.setAccount(user.getAccount() - pay.getPrice());
-        userService.updateById(user);*/
+        userMapper.updateById(user);
 
         pay.setStatus("已缴费");
         payMapper.updateById(pay);
@@ -76,11 +82,17 @@ public class PayServiceImpl implements PayService {
      * 分页查询
      */
     public PageInfo<Pay> selectPage(Pay pay, Integer pageNum, Integer pageSize) {
-        //TODO
-        /*Account currentUser = TokenUtils.getCurrentUser();
-        if (RoleEnum.USER.name().equals(currentUser.getRole())) {
-            pay.setUserId(currentUser.getId());
-        }*/
+        //如果不是管理员，设置id，查询当前用户相关信息
+        LoginUser  currentUser = SecurityUtil.getLoginUser();
+        List<String> roleList = currentUser.getRoleList();
+        if (!roleList.contains(Role.ROLE_ADMIN)) {
+            Long userId = currentUser.getUser().getId();
+            if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
+                pay.setId(userId.intValue());
+            } else {
+                throw new IllegalArgumentException("userId 超出 Integer 范围！");
+            }
+        }
         PageHelper.startPage(pageNum, pageSize);
         List<Pay> list = this.selectAll(pay);
         return PageInfo.of(list);

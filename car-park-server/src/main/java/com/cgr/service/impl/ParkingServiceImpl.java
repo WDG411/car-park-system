@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
+import com.cgr.constant.Role;
+import com.cgr.entity.LoginUser;
 import com.cgr.entity.Parking;
 import com.cgr.entity.ParkingLot;
 import com.cgr.entity.Pay;
@@ -12,6 +14,7 @@ import com.cgr.mapper.ParkingMapper;
 import com.cgr.service.ParkingLotService;
 import com.cgr.service.ParkingService;
 import com.cgr.service.PayService;
+import com.cgr.utils.SecurityUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
@@ -121,11 +124,23 @@ public class ParkingServiceImpl implements ParkingService {
      * 分页查询
      */
     public PageInfo<Parking> selectPage(Parking parking, Integer pageNum, Integer pageSize) {
-        //TODO
+
         /*Account currentUser = TokenUtils.getCurrentUser();
         if (RoleEnum.USER.name().equals(currentUser.getRole())) {
             parking.setUserId(currentUser.getId());
         }*/
+        //如果不是管理员，设置id，查询当前用户相关信息
+        LoginUser  currentUser = SecurityUtil.getLoginUser();
+        List<String> roleList = currentUser.getRoleList();
+        if (!roleList.contains(Role.ROLE_ADMIN)) {
+            Long userId = currentUser.getUser().getId();
+            if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
+                parking.setId(userId.intValue());
+            } else {
+                throw new IllegalArgumentException("userId 超出 Integer 范围！");
+            }
+        }
+
         PageHelper.startPage(pageNum, pageSize);
         List<Parking> list = this.selectAll(parking);
         return PageInfo.of(list);

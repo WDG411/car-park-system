@@ -32,4 +32,6 @@ public class LoginUserVo implements Serializable {
     private List<String> roleList;
 
     private String token;
+
+    private Double account;
 }

@@ -34,4 +34,7 @@ public class CPUser implements Serializable {
     private String phone;
 
     private String sex;
+
+    //新加入余额字段
+    private Double account;
 }

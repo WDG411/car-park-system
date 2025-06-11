@@ -5,8 +5,8 @@
 <mapper namespace="com.cgr.mapper.VehicleMapper">
 
     <select id="selectAll" resultType="com.cgr.entity.Vehicle">
-        select vehicle.*, user.name as userName from vehicle
-        left join user on vehicle.user_id = user.id
+        select vehicle.*, user.username as userName from vehicle
+        left join cp_user user on vehicle.user_id = user.id
         <where>
             <if test="id != null"> and vehicle.id = #{id}</if>
             <if test="name != null"> and vehicle.name like concat('%', #{name}, '%')</if>

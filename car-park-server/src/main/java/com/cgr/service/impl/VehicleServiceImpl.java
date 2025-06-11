@@ -1,8 +1,11 @@
 package com.cgr.service.impl;
 
+import com.cgr.constant.Role;
+import com.cgr.entity.LoginUser;
 import com.cgr.entity.Vehicle;
 import com.cgr.mapper.VehicleMapper;
 import com.cgr.service.VehicleService;
+import com.cgr.utils.SecurityUtil;
 import jakarta.annotation.Resource;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -63,11 +66,18 @@ public class VehicleServiceImpl implements VehicleService {
      * 分页查询
      */
     public PageInfo<Vehicle> selectPage(Vehicle vehicle, Integer pageNum, Integer pageSize) {
-        //TODO
-        /*Account currentUser = TokenUtils.getCurrentUser();
-        if (RoleEnum.USER.name().equals(currentUser.getRole())) {
-            vehicle.setUserId(currentUser.getId());
-        }*/
+        //如果不是管理员，设置id，查询当前用户相关信息
+        LoginUser currentUser = SecurityUtil.getLoginUser();
+        List<String> roleList = currentUser.getRoleList();
+        if (!roleList.contains(Role.ROLE_ADMIN)) {
+            Long userId = currentUser.getUser().getId();
+            if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
+                vehicle.setId(userId.intValue());
+            } else {
+                throw new IllegalArgumentException("userId 超出 Integer 范围！");
+            }
+        }
+
         PageHelper.startPage(pageNum, pageSize);
         List<Vehicle> list = this.selectAll(vehicle);
         return PageInfo.of(list);

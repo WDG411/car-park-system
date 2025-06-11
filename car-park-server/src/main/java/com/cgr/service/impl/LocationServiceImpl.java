@@ -2,13 +2,13 @@ package com.cgr.service.impl;
 
 import com.cgr.entity.Location;
 import com.cgr.entity.ParkingLot;
+import com.cgr.exception.CustomException;
 import com.cgr.mapper.LocationMapper;
 import com.cgr.mapper.ParkingLotMapper;
 import com.cgr.service.LocationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
-import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,10 +33,11 @@ public class LocationServiceImpl implements LocationService {
     public void deleteById(Integer id) {
 
         Location location = locationMapper.selectById(id);
-        //TODO
-        /*if (location.getTotal() > 0) {
-            throw new CustomException("500", "该区域有停车位信息，暂不支持删除");
-        }*/
+
+        if (location.getTotal() > 0) {
+            throw new CustomException(500, "该区域有停车位信息，暂不支持删除");
+        }
+
         locationMapper.deleteById(id);
     }
 
