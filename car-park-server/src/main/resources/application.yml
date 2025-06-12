@@ -7,9 +7,16 @@ spring:
     oauth2:
       client:
         registration:
+          github:
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/github
           google:
             clientId: ${GOOGLE_CLIENT_ID}
             clientSecret: ${GOOGLE_CLIENT_SECRET}
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/google
           gitee:
             clientId: ${GITEE_CLIENT_ID}
             clientSecret: ${GITEE_CLIENT_SECRET}

@@ -51,6 +51,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
+        System.out.println("OAuth2进来");
         DefaultOAuth2User oAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
         String registrationId = ((OAuth2AuthenticationToken) authentication)
                 .getAuthorizedClientRegistrationId();
