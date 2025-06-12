@@ -39,8 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //放行 登录相关的请求
         String  url = request.getRequestURI();
-        if (url.contains("/login")||url.contains("/register")||url.contains("/captchaImage")
-            ||url.contains("/getRouters")) {
+        if (url.contains("/login")||url.contains("/register")||url.contains("/captchaImage")){
             filterChain.doFilter(request, response);
             return;
         }

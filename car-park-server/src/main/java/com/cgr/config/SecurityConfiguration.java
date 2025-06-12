@@ -53,7 +53,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/login", "/register", "/captchaImage","/getRouters").permitAll()
+                        .requestMatchers("/login", "/register", "/captchaImage").permitAll()
                         .anyRequest().authenticated()
                 )
                 // 2. 异常处理
