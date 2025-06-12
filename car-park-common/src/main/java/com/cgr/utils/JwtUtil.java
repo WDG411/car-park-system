@@ -35,6 +35,21 @@ public class JwtUtil {
     }
 
     /**
+     * 生成JWT令牌
+     * @param claims 令牌中包含的信息
+     * @return 生成的JWT令牌字符串
+     */
+    public static String generateToken(Map<String, Object> claims) {
+        return Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, SECRET)
+                .addClaims(claims)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .compact();
+    }
+
+
+
+    /**
      * 解析JWT令牌
      * @param token 要解析的JWT令牌字符串
      * @return 包含令牌信息的Claims对象

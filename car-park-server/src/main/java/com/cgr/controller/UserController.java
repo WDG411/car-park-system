@@ -1,8 +1,10 @@
 package com.cgr.controller;
 
 import com.cgr.ResponseModel;
+import com.cgr.dto.PasswordUpdateDTO;
 import com.cgr.entity.CPUser;
 import com.cgr.mapper.UserMapper;
+import com.cgr.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,8 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -35,6 +39,17 @@ public class UserController {
     @PutMapping("/update")
     public ResponseModel updateById(@RequestBody CPUser user) {
         userMapper.updateById(user);
+        return ResponseModel.success();
+    }
+
+    /**
+     * 修改密码
+     * @param passwordUpdateDTO
+     * @return
+     */
+    @PutMapping("/updatePassword")
+    public ResponseModel updatePassword(@RequestBody PasswordUpdateDTO passwordUpdateDTO) {
+        userService.updatePassword(passwordUpdateDTO);
         return ResponseModel.success();
     }
 }

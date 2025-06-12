@@ -1,6 +1,32 @@
 spring:
   profiles:
     active: dev
+
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${GOOGLE_CLIENT_ID}
+            clientSecret: ${GOOGLE_CLIENT_SECRET}
+          gitee:
+            clientId: ${GITEE_CLIENT_ID}
+            clientSecret: ${GITEE_CLIENT_SECRET}
+            authorizationGrantType: authorization_code
+            redirectUri: http://localhost:8080/login/oauth2/code/gitee
+            scope:
+              - user_info
+              - emails
+            provider: gitee
+        provider:
+          gitee:
+            authorizationUri: https://gitee.com/oauth/authorize
+            tokenUri: https://gitee.com/oauth/token
+            userInfoUri: https://gitee.com/api/v5/user
+            userNameAttribute: login
+
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/car_park?serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf-8&useSSL=false

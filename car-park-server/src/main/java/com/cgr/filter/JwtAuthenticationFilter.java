@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //放行 登录相关的请求
         String  url = request.getRequestURI();
-        if (url.contains("/login")||url.contains("/register")||url.contains("/captchaImage")) {
+        if (url.contains("/login")||url.contains("/register")||url.contains("/captchaImage")
+            ||url.contains("/getRouters")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -48,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = parseJwt(request);
 
         if(token == null){
-            throw new BadCredentialsException("token缺失");
+            throw new CredentialsExpiredException("token缺失");
         }
 
         String key = Constants.LOGIN_USER_KEY;
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Integer id = claims.get("userid",  Integer.class);
             key = key + id;
         }catch (Exception e){
-            throw new BadCredentialsException("token无效");
+            throw new CredentialsExpiredException("token无效");
         }
 
         //从 redis 中获取用户信息

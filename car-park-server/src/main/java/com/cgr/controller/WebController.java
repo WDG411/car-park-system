@@ -3,6 +3,7 @@ package com.cgr.controller;
 import com.cgr.ResponseModel;
 import com.cgr.dto.LoginBody;
 import com.cgr.entity.CPMenu;
+import com.cgr.entity.LoginUser;
 import com.cgr.service.MenuService;
 import com.cgr.service.WebService;
 import com.cgr.utils.SecurityUtil;
@@ -37,7 +38,8 @@ public class WebController {
     @GetMapping("/getRouters")
     public ResponseModel getRouters()
     {
-        Long userId = SecurityUtil.getLoginUser().getUser().getId();
+        LoginUser loginUser = SecurityUtil.getLoginUser();
+        Long userId = loginUser.getUser().getId();
         List<CPMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return ResponseModel.success(menus);
     }

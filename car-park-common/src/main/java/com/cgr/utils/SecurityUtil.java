@@ -30,6 +30,9 @@ public class SecurityUtil {
      * 获取loginUser
      */
     public static LoginUser getLoginUser(){
+        if (getAuthentication() == null) {
+            return null;
+        }
         return (LoginUser) getAuthentication().getPrincipal();
     }
 

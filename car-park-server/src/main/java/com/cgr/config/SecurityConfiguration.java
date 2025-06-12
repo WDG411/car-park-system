@@ -1,5 +1,6 @@
 package com.cgr.config;
 
+import com.cgr.exception.handler.OAuth2LoginSuccessHandler;
 import com.cgr.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 @Configuration
@@ -23,6 +26,12 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+    @Autowired
+    private OAuth2LoginSuccessHandler AuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,11 +53,19 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/login", "/register", "/captchaImage").permitAll()
+                        .requestMatchers("/login", "/register", "/captchaImage","/getRouters").permitAll()
                         .anyRequest().authenticated()
                 )
+                // 2. 异常处理
+                .exceptionHandling(exception ->{
+                    exception.authenticationEntryPoint(authenticationEntryPoint)
+                            .accessDeniedHandler(accessDeniedHandler);
+                })
+                // 3. 启用 OAuth2 登录（使用默认设置即可）
+                .oauth2Login(auth -> auth.successHandler(AuthenticationSuccessHandler))
                 .csrf(csrf -> csrf.disable())
                 .formLogin(formLogin->formLogin.disable())
+                .logout(logout -> logout.disable())
                 .addFilterBefore(jwtAuthenticationFilter, AuthorizationFilter.class);
 
         return http.build();
