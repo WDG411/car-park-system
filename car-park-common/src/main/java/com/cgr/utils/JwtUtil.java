@@ -25,7 +25,7 @@ public class JwtUtil {
      */
     public static String generateToken(CPUser user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("userid", user.getId());
+        claims.put("userId", user.getId());
         claims.put("username", user.getUsername());
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, SECRET)

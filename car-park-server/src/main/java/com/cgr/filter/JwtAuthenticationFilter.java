@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //取得token中的用户标识（注意解析的异常处理）
         try{
             claims = JwtUtil.parseToken(token);
-            Integer id = claims.get("userid",  Integer.class);
+            Integer id = claims.get("userId",  Integer.class);
             key = key + id;
         }catch (Exception e){
             throw new CredentialsExpiredException("token无效");

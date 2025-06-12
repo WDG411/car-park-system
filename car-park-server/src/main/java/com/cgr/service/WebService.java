@@ -8,4 +8,6 @@ public interface WebService {
     ResponseModel login(LoginBody loginBody);
 
     ResponseModel addUser(LoginBody loginBody);
+
+    //LoginUserVo addUserByOAuth2(DefaultOAuth2User oAuth2User, String provider);
 }

@@ -97,6 +97,8 @@ public class WebServiceImpl implements WebService {
         List<String> roleList = Arrays.asList(ROLE_USER);
         loginUserVo.setRoleList(roleList);
 
+        loginUserVo.setAccount(0.00);
+
         //存入Secuirty上下文
         UsernamePasswordAuthenticationToken authenticate =
                 SecurityUtil.tokenAuthenticate(

@@ -39,4 +39,7 @@ public class Constants {
 
     public static final String AUTHORIZATION = "Authorization";
 
+
+    // 临时用户id
+    public static final Long TEMP_USER_ID = 99999L;
 }
