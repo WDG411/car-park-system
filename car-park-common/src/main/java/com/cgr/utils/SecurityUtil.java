@@ -54,6 +54,7 @@ public class SecurityUtil {
         CPUser user = loginUser.getUser();
         LoginUserVo loginUserVo = new LoginUserVo();
         BeanUtils.copyProperties(user, loginUserVo);
+        loginUserVo.setRoleList(loginUser.getRoleList());
         return loginUserVo;
     }
 
