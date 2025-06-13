@@ -21,6 +21,7 @@ public class AdminController {
 
     @PostMapping("/add")
     public ResponseModel add(@RequestBody CPUser user) {
+        System.out.println("user = " + user);
         adminService.add(user);
         return ResponseModel.success();
     }

@@ -21,7 +21,8 @@
         avatar,
         email,
         phone,
-        sex<!-- 新增字段 -->
+        sex<!-- 新增字段 -->,
+        account
         FROM cp_user u
         left join cp_user_role ur on u.id = ur.user_id
         <where>

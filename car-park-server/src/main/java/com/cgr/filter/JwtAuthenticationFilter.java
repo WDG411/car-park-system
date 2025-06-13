@@ -70,6 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = claims.get("username", String.class);
             LoginUser loginUser =  (LoginUser) userDetailsService.loadUserByUsername(username);
 
+            loginUserVo = SecurityUtil.getLoginUserVoFromLoginUser(loginUser);
+
             //重新存入redis
             redisUtil.setCacheObject(key, loginUserVo, Constants.USER_INFO_TTL, TimeUnit.MINUTES);
         }

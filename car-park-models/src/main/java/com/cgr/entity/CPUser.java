@@ -37,4 +37,19 @@ public class CPUser implements Serializable {
 
     //新加入余额字段
     private Double account;
+
+    @Override
+    public String toString() {
+        return "CPUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", sex='" + sex + '\'' +
+                ", account=" + account +
+                '}';
+    }
 }

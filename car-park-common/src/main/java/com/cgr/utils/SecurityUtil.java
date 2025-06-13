@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 
 
 public class SecurityUtil {
@@ -57,6 +58,9 @@ public class SecurityUtil {
     }
 
     public static LoginUser getLoginUserFromLoginUserVo(LoginUserVo loginUserVo) {
+        if(ObjectUtils.isEmpty(loginUserVo)){
+            throw new RuntimeException("loginUserVo is null");
+        }
         CPUser  user = new CPUser();
         BeanUtils.copyProperties(loginUserVo, user);
         return new LoginUser(user, loginUserVo.getRoleList());

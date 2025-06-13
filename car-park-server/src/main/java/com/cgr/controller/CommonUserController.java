@@ -81,6 +81,7 @@ public class CommonUserController {
     public ResponseModel selectPage(CPUser user,
                              @RequestParam(defaultValue = "1") Integer pageNum,
                              @RequestParam(defaultValue = "10") Integer pageSize) {
+        System.out.println("user = " + user);
         PageInfo<CPUser> page = userService.selectPage(user, pageNum, pageSize);
         return ResponseModel.success(page);
     }

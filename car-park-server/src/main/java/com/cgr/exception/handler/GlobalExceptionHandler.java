@@ -4,6 +4,7 @@ import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
 import com.cgr.ResponseModel;
 import com.cgr.exception.CustomException;
+import com.cgr.exception.ObjectEmptyException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(body);
+    }
+
+    /**
+     * 捕获对象为空异常
+     */
+    @ExceptionHandler(ObjectEmptyException.class)
+    public ResponseModel handleObjectEmptyException(ObjectEmptyException ex) {
+        ResponseModel<?> body = ResponseModel.error(ex.getMessage());
+        return body;
     }
 
     /**
