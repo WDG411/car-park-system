@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -55,6 +56,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(body);
+    }
+
+    /**
+     * 捕获文件上传大小超出异常
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseModel<?> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        // 你可以自定义返回格式
+        String msg = "文件大小超出限制，上传失败（最大允许大小："
+                + (ex.getMaxUploadSize() / 1024 / 1024) + "MB）";
+        return ResponseModel.error(msg);
     }
 
     /**

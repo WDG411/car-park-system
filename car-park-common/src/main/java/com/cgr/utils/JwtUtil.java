@@ -16,7 +16,7 @@ public class JwtUtil {
 
     private static final String SECRET = "cgrwdg"; // 秘钥
 
-    private static final long EXPIRATION = 1800000; // 12小时
+    private static final long EXPIRATION = 7200000; // 2小时
 
     /**
      * 生成JWT令牌

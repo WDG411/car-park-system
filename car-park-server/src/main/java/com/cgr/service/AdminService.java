@@ -19,4 +19,8 @@ public interface AdminService {
     List<CPUser> selectAll(CPUser user);
 
     PageInfo<CPUser> selectPage(CPUser user, Integer pageNum, Integer pageSize);
+
+    void liftToAdmin(List<Long> ids);
+
+    void downToUser(List<Long> ids);
 }

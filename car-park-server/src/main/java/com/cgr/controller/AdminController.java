@@ -7,6 +7,7 @@ import com.cgr.entity.CPUser;
 import com.cgr.service.AdminService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,11 +20,34 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * 给用户增加管理员权限
+     * @param ids
+     * @return
+     */
+    @PutMapping("/liftToAdmin")
+    public ResponseModel liftToAdmin(@RequestBody List<Long> ids) {
+        if(CollectionUtils.isEmpty(ids)){
+            return ResponseModel.error("请选择用户");
+        }
+        adminService.liftToAdmin(ids);
+        return ResponseModel.success();
+    }
+
+    @PutMapping("/downToUser")
+    public ResponseModel downToUser(@RequestBody List<Long> ids) {
+        if(CollectionUtils.isEmpty(ids)){
+            return ResponseModel.error("请选择用户");
+        }
+        adminService.downToUser(ids);
+        return ResponseModel.success();
+    }
+
     @PostMapping("/add")
     public ResponseModel add(@RequestBody CPUser user) {
-        System.out.println("user = " + user);
-        adminService.add(user);
-        return ResponseModel.success();
+        /*System.out.println("user = " + user);
+        adminService.add(user);*/
+        return ResponseModel.error("暂不支持此功能");
     }
 
     /**

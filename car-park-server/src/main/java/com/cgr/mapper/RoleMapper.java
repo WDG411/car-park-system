@@ -18,4 +18,10 @@ public interface RoleMapper extends BaseMapper<CPRole> {
     void deleteByUserId(Long userId);
 
     void deleteBatch(@Param("userIds") List<Long> userIds);
+
+    void insertUserRoleBatch(
+            @Param("roleId") Long roleId,
+            @Param("userIds") List<Long> userIds
+    );
+
 }

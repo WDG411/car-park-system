@@ -39,7 +39,7 @@ public class ResponseModel<T> {
     }
 
     public static <T> ResponseModel<T> error(int code, String msg){
-        return new ResponseModel<T>(code, "msg", null);
+        return new ResponseModel<T>(code, msg, null);
     }
 
 

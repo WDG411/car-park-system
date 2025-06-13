@@ -89,4 +89,23 @@ public class AdminServiceImpl implements AdminService {
         return PageInfo.of(list);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void liftToAdmin(List<Long> ids) {
+        //将用户的原始角色去除
+        roleMapper.deleteBatch(ids);
+
+        //为用户赋予管理员权限
+        roleMapper.insertUserRoleBatch(Role.ROLE_ADMIN_ID, ids);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void downToUser(List<Long> ids) {
+        //将用户的原始角色去除
+        roleMapper.deleteBatch(ids);
+
+        //为用户赋予普通用户权限
+        roleMapper.insertUserRoleBatch(Role.ROLE_USER_ID, ids);
+    }
 }

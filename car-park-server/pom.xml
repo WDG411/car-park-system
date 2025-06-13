@@ -40,6 +40,13 @@
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
         </dependency>
 
+        <!--自己装配的oss-->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-oss-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
         <!--  hutool工具类 -->
         <dependency>
             <groupId>cn.hutool</groupId>
