@@ -8,9 +8,9 @@ import java.util.List;
 public interface VehicleService {
     void add(Vehicle vehicle);
 
-    void deleteById(Integer id);
+    void deleteById(Long id);
 
-    void deleteBatch(List<Integer> ids);
+    void deleteBatch(List<Long> ids);
 
     void updateById(Vehicle vehicle);
 

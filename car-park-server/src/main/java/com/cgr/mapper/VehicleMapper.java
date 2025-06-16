@@ -21,7 +21,7 @@ public interface VehicleMapper {
     /**
       * 删除
     */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
       * 修改

@@ -34,7 +34,7 @@ public class VehicleController {
      * 删除
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseModel deleteById(@PathVariable Integer id) {
+    public ResponseModel deleteById(@PathVariable Long id) {
         vehicleService.deleteById(id);
         return ResponseModel.success();
     }
@@ -43,7 +43,7 @@ public class VehicleController {
      * 批量删除
      */
     @DeleteMapping("/delete/batch")
-    public ResponseModel deleteBatch(@RequestBody List<Integer> ids) {
+    public ResponseModel deleteBatch(@RequestBody List<Long> ids) {
         vehicleService.deleteBatch(ids);
         return ResponseModel.success();
     }
