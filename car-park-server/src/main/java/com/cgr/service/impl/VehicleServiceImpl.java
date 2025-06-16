@@ -78,11 +78,12 @@ public class VehicleServiceImpl implements VehicleService {
         List<String> roleList = currentUser.getRoleList();
         if (!roleList.contains(Role.ROLE_ADMIN)) {
             Long userId = currentUser.getUser().getId();
-            if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
+            /*if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
                 vehicle.setId(userId.intValue());
             } else {
                 throw new IllegalArgumentException("userId 超出 Integer 范围！");
-            }
+            }*/
+            vehicle.setUserId(userId);
         }
 
         PageHelper.startPage(pageNum, pageSize);

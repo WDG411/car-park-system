@@ -134,11 +134,12 @@ public class ParkingServiceImpl implements ParkingService {
         List<String> roleList = currentUser.getRoleList();
         if (!roleList.contains(Role.ROLE_ADMIN)) {
             Long userId = currentUser.getUser().getId();
-            if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
-                parking.setId(userId.intValue());
+            /*if (userId != null && userId >= Integer.MIN_VALUE && userId <= Integer.MAX_VALUE) {
+                parking.setUserId(userId);
             } else {
                 throw new IllegalArgumentException("userId 超出 Integer 范围！");
-            }
+            }*/
+            parking.setUserId(userId);
         }
 
         PageHelper.startPage(pageNum, pageSize);
