@@ -1,12 +1,12 @@
 package com.cgr.service.impl;
 
 import com.cgr.constant.Role;
-import com.cgr.entity.CPUser;
+import com.cgr.constant.Vehicle;
 import com.cgr.entity.LoginUser;
 import com.cgr.entity.Pay;
-import com.cgr.exception.CustomException;
 import com.cgr.mapper.PayMapper;
 import com.cgr.mapper.UserMapper;
+import com.cgr.mapper.VehicleMapper;
 import com.cgr.service.PayService;
 import com.cgr.utils.SecurityUtil;
 import com.github.pagehelper.PageHelper;
@@ -23,6 +23,8 @@ public class PayServiceImpl implements PayService {
     private PayMapper payMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private VehicleMapper vehicleMapper;
 
     /**
      * 新增
@@ -48,10 +50,10 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     * 修改
+     * 缴费
      */
     public void updateById(Pay pay) {
-        // 查询余额
+        /*// 查询余额
         CPUser user = userMapper.selectById(pay.getUserId());
         if (user.getAccount() < pay.getPrice()) {
             throw new CustomException(500, "您的余额不足，请到个人中心充值");
@@ -61,7 +63,24 @@ public class PayServiceImpl implements PayService {
         userMapper.updateById(user);
 
         pay.setStatus("已缴费");
-        payMapper.updateById(pay);
+        payMapper.updateById(pay);*/
+
+        //查询车辆类型
+        int type = vehicleMapper.selectTypeById(pay.getVehicleId());
+
+        // 内部车
+        if (type == Vehicle.TYPE_INTERNAL) {
+            pay.setStatus("已缴费");
+            payMapper.updateById(pay);
+            return;
+        } else if (type ==Vehicle.TYPE_BLACKLIST) {
+            //黑名单车辆
+            throw new RuntimeException("黑名单车辆无法缴费");
+        } else if (type == Vehicle.TYPE_TEMPORARY) {
+            //临时车辆
+        }
+
+
     }
 
     /**

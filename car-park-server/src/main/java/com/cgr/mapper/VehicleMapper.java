@@ -47,4 +47,6 @@ public interface VehicleMapper {
     void updateTypeByIds(@Param("vehicleIds")List<Long> ids);
 
     void monthlyCharge(Long userId, Long vehicleId);
+
+    int selectTypeById(Long vehicleId);
 }

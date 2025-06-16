@@ -5,11 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @TableName("charge")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Charge {
+public class Charge implements Serializable {
 
     private Long id;
 

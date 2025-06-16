@@ -25,6 +25,12 @@
         where name = #{name}
     </select>
 
+
+    <select id="selectTypeById" resultType="java.lang.Integer">
+        select type from `vehicle`
+        where id = #{id}
+    </select>
+
     <delete id="deleteById">
         delete from `vehicle`
         where id = #{id}
