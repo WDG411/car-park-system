@@ -43,4 +43,8 @@ public interface VehicleMapper {
     void deleteBatch(@Param("userIds") List<Long> userIds);
 
     Vehicle selectByName(String name);
+
+    void updateTypeByIds(@Param("vehicleIds")List<Long> ids);
+
+    void monthlyCharge(Long userId, Long vehicleId);
 }

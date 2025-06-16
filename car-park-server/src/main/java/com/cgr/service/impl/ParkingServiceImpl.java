@@ -93,8 +93,12 @@ public class ParkingServiceImpl implements ParkingService {
         Pay pay = new Pay();
         BeanUtils.copyProperties(parking, pay);
         Long minutes = DateUtil.between(DateUtil.parse(pay.getStartTime()), DateUtil.parse(pay.getEndTime()), DateUnit.MINUTE);
+
+        //todo
         pay.setMinutes(minutes.intValue());
         pay.setPrice(0.1 * pay.getMinutes());
+
+
         pay.setStatus("未缴费");
         payService.add(pay);
         // 更新停车位状态

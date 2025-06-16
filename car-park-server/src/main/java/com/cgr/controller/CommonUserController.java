@@ -85,4 +85,6 @@ public class CommonUserController {
         PageInfo<CPUser> page = userService.selectPage(user, pageNum, pageSize);
         return ResponseModel.success(page);
     }
+
+
 }

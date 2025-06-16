@@ -90,4 +90,14 @@ public class VehicleServiceImpl implements VehicleService {
         List<Vehicle> list = this.selectAll(vehicle);
         return PageInfo.of(list);
     }
+
+    @Override
+    public void updateTypeByIds(List<Long> ids) {
+        vehicleMapper.updateTypeByIds(ids);
+    }
+
+    @Override
+    public void monthlyCharge(Long userId, Long vehicleId) {
+        vehicleMapper.monthlyCharge(userId, vehicleId);
+    }
 }

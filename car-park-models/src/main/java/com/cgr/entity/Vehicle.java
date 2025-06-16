@@ -13,6 +13,16 @@ public class Vehicle {
     private Long userId;
     private String userName;
 
+
+    //新增字段
+    /**
+     * 1 内部车
+     * 2 月租车
+     * 3 临时车
+     * 4 黑名单
+     */
+    private int type;
+
     public Integer getId() {
         return id;
     }
@@ -43,6 +53,14 @@ public class Vehicle {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
 }

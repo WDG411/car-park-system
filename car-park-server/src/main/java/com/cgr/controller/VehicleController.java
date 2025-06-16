@@ -2,6 +2,7 @@ package com.cgr.controller;
 
 
 import com.cgr.ResponseModel;
+import com.cgr.aop.annotation.HasRole;
 import com.cgr.entity.Vehicle;
 import com.cgr.service.VehicleService;
 import com.github.pagehelper.PageInfo;
@@ -83,6 +84,25 @@ public class VehicleController {
                              @RequestParam(defaultValue = "10") Integer pageSize) {
         PageInfo<Vehicle> page = vehicleService.selectPage(vehicle, pageNum, pageSize);
         return ResponseModel.success(page);
+    }
+
+    /**
+     * 管理员设置车辆类型
+     */
+    @HasRole("ADMIN")
+    @PostMapping("/setType")
+    public ResponseModel setType(@RequestBody List<Long> ids) {
+        vehicleService.updateTypeByIds(ids);
+        return ResponseModel.success();
+    }
+
+    /**
+     * 普通用户充值月费
+     */
+    @PostMapping("/recharge/{userId}/{vehicleId}")
+    public ResponseModel recharge(@PathVariable Long userId,@PathVariable Long vehicleId) {
+        vehicleService.monthlyCharge(userId,vehicleId);
+        return ResponseModel.success();
     }
 
 }

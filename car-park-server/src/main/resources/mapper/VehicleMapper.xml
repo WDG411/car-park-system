@@ -71,4 +71,24 @@
         where id = #{id} 
     </update>
 
+
+    <update id="updateTypeByIds">
+        update `vehicle`
+        set type = #{type}
+        where id in
+        <foreach item="item" index="index" collection="vehicleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <update id="monthlyCharge">
+        UPDATE vehicle
+        SET
+            type = 2,
+            monthly_start_time = NOW(),
+            monthly_end_time = DATE_ADD(NOW(), INTERVAL 1 MONTH)
+        WHERE user_id = #{userId} AND id = #{vehicleId}
+    </update>
+
 </mapper>
