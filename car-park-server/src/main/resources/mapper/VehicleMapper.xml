@@ -20,10 +20,28 @@
         select * from `vehicle`
         where id = #{id}
     </select>
+    <select id="selectByName" resultType="com.cgr.entity.Vehicle">
+        select * from `vehicle`
+        where name = #{name}
+    </select>
 
     <delete id="deleteById">
         delete from `vehicle`
         where id = #{id}
+    </delete>
+
+
+    <delete id="deleteByUserId">
+        delete from `vehicle`
+        where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from `vehicle`
+        where id in
+        <foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <insert id="insert" parameterType="com.cgr.entity.Vehicle" useGeneratedKeys="true" keyProperty="id">
