@@ -21,7 +21,7 @@ public interface VehicleService {
     PageInfo<Vehicle> selectPage(Vehicle vehicle, Integer pageNum, Integer pageSize);
 
 
-    void updateTypeByIds(List<Long> ids);
+    void updateTypeByIds(List<Long> ids,int carType);
 
     void monthlyCharge(Long vehicleId);
 }

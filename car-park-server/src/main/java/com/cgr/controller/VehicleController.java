@@ -90,9 +90,9 @@ public class VehicleController {
      * 管理员设置车辆类型
      */
     @HasRole("ADMIN")
-    @PostMapping("/setType")
-    public ResponseModel setType(@RequestBody List<Long> ids) {
-        vehicleService.updateTypeByIds(ids);
+    @PostMapping("/setType/{carType}")
+    public ResponseModel setType(@RequestBody List<Long> ids,@PathVariable int carType) {
+        vehicleService.updateTypeByIds(ids, carType);
         return ResponseModel.success();
     }
 

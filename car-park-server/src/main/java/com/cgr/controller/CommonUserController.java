@@ -2,9 +2,12 @@ package com.cgr.controller;
 
 import com.cgr.ResponseModel;
 import com.cgr.entity.CPUser;
+import com.cgr.mapper.UserMapper;
 import com.cgr.service.CommonUserService;
+import com.cgr.utils.SecurityUtil;
 import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,8 @@ public class CommonUserController {
 
     @Resource
     private CommonUserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 新增
@@ -55,6 +60,17 @@ public class CommonUserController {
         userService.updateById(user);
         return ResponseModel.success();
     }
+
+    /**
+     * 查询
+     */
+    @GetMapping("/getInfo")
+    public ResponseModel getInfo() {
+        Long userId = SecurityUtil.getLoginUser().getUser().getId();
+        CPUser user = userMapper.selectById(userId);
+        return ResponseModel.success(user);
+    }
+
 
     /**
      * 根据ID查询

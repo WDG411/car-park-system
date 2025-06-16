@@ -102,7 +102,7 @@
     <!-- 批量修改类型 -->
     <update id="updateTypeByIds" parameterType="map">
         UPDATE vehicle
-        SET type = #{type}
+        SET type = #{carType}
         WHERE id IN
         <foreach item="id" collection="vehicleIds" open="(" separator="," close=")">
             #{id}

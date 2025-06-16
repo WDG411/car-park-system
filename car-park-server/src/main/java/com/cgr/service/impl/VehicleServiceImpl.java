@@ -106,8 +106,8 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void updateTypeByIds(List<Long> ids) {
-        vehicleMapper.updateTypeByIds(ids);
+    public void updateTypeByIds(List<Long> ids,int carType) {
+        vehicleMapper.updateTypeByIds(ids,carType);
     }
 
     @Override
@@ -115,9 +115,11 @@ public class VehicleServiceImpl implements VehicleService {
     public void monthlyCharge(Long vehicleId) {
 
         Double monthlyFee = redisUtil.getCharge().getMonthlyFee();
-        CPUser user = SecurityUtil.getLoginUser().getUser();
+        Long userId = SecurityUtil.getLoginUser().getUser().getId();
+        CPUser user = userMapper.selectById(userId);
         Double account = user.getAccount();
         if(account < monthlyFee){
+            System.out.println(account);
             throw new RuntimeException("账户余额不足");
         }
         user.setAccount(account - monthlyFee);
