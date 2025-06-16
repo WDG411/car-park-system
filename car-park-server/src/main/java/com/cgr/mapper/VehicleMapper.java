@@ -31,7 +31,7 @@ public interface VehicleMapper {
     /**
       * 根据ID查询
     */
-    Vehicle selectById(Integer id);
+    Vehicle selectById(Long id);
 
     /**
       * 查询所有
@@ -46,7 +46,9 @@ public interface VehicleMapper {
 
     void updateTypeByIds(@Param("vehicleIds")List<Long> ids);
 
-    void monthlyCharge(Long userId, Long vehicleId);
+    void monthlyCharge(Long vehicleId);
 
     int selectTypeById(Long vehicleId);
+
+    void updateTypeTempById(Long vehicleId);
 }

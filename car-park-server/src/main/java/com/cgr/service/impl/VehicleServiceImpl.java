@@ -58,7 +58,7 @@ public class VehicleServiceImpl implements VehicleService {
     /**
      * 根据ID查询
      */
-    public Vehicle selectById(Integer id) {
+    public Vehicle selectById(Long id) {
         return vehicleMapper.selectById(id);
     }
 
@@ -97,7 +97,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public void monthlyCharge(Long userId, Long vehicleId) {
-        vehicleMapper.monthlyCharge(userId, vehicleId);
+    public void monthlyCharge(Long vehicleId) {
+        vehicleMapper.monthlyCharge(vehicleId);
     }
 }

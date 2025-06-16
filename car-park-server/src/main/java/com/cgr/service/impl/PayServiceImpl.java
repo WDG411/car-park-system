@@ -1,9 +1,10 @@
 package com.cgr.service.impl;
 
 import com.cgr.constant.Role;
-import com.cgr.constant.Vehicle;
+import com.cgr.entity.CPUser;
 import com.cgr.entity.LoginUser;
 import com.cgr.entity.Pay;
+import com.cgr.exception.CustomException;
 import com.cgr.mapper.PayMapper;
 import com.cgr.mapper.UserMapper;
 import com.cgr.mapper.VehicleMapper;
@@ -53,7 +54,7 @@ public class PayServiceImpl implements PayService {
      * 缴费
      */
     public void updateById(Pay pay) {
-        /*// 查询余额
+        // 查询余额
         CPUser user = userMapper.selectById(pay.getUserId());
         if (user.getAccount() < pay.getPrice()) {
             throw new CustomException(500, "您的余额不足，请到个人中心充值");
@@ -63,25 +64,10 @@ public class PayServiceImpl implements PayService {
         userMapper.updateById(user);
 
         pay.setStatus("已缴费");
-        payMapper.updateById(pay);*/
-
-        //查询车辆类型
-        int type = vehicleMapper.selectTypeById(pay.getVehicleId());
-
-        // 内部车
-        if (type == Vehicle.TYPE_INTERNAL) {
-            pay.setStatus("已缴费");
-            payMapper.updateById(pay);
-            return;
-        } else if (type ==Vehicle.TYPE_BLACKLIST) {
-            //黑名单车辆
-            throw new RuntimeException("黑名单车辆无法缴费");
-        } else if (type == Vehicle.TYPE_TEMPORARY) {
-            //临时车辆
-        }
-
+        payMapper.updateById(pay);
 
     }
+
 
     /**
      * 根据ID查询
@@ -102,7 +88,7 @@ public class PayServiceImpl implements PayService {
      */
     public PageInfo<Pay> selectPage(Pay pay, Integer pageNum, Integer pageSize) {
         //如果不是管理员，设置id，查询当前用户相关信息
-        LoginUser  currentUser = SecurityUtil.getLoginUser();
+        LoginUser currentUser = SecurityUtil.getLoginUser();
         List<String> roleList = currentUser.getRoleList();
         if (!roleList.contains(Role.ROLE_ADMIN)) {
             Long userId = currentUser.getUser().getId();

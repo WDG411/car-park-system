@@ -61,7 +61,7 @@ public class VehicleController {
      * 根据ID查询
      */
     @GetMapping("/selectById/{id}")
-    public ResponseModel selectById(@PathVariable Integer id) {
+    public ResponseModel selectById(@PathVariable Long id) {
         Vehicle vehicle = vehicleService.selectById(id);
         return ResponseModel.success(vehicle);
     }
@@ -99,9 +99,9 @@ public class VehicleController {
     /**
      * 普通用户充值月费
      */
-    @PostMapping("/recharge/{userId}/{vehicleId}")
-    public ResponseModel recharge(@PathVariable Long userId,@PathVariable Long vehicleId) {
-        vehicleService.monthlyCharge(userId,vehicleId);
+    @PostMapping("/recharge/{vehicleId}")
+    public ResponseModel recharge(@PathVariable Long vehicleId) {
+        vehicleService.monthlyCharge(vehicleId);
         return ResponseModel.success();
     }
 

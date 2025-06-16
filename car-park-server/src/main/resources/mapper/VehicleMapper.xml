@@ -94,7 +94,13 @@
             type = 2,
             monthly_start_time = NOW(),
             monthly_end_time = DATE_ADD(NOW(), INTERVAL 1 MONTH)
-        WHERE user_id = #{userId} AND id = #{vehicleId}
+        WHERE id = #{vehicleId}
+    </update>
+
+    <update id="updateTypeTempById">
+        update vehicle
+        set type = 3
+        where id = #{vehicleId}
     </update>
 
 </mapper>

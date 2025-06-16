@@ -14,7 +14,7 @@ public interface VehicleService {
 
     void updateById(Vehicle vehicle);
 
-    Vehicle selectById(Integer id);
+    Vehicle selectById(Long id);
 
     List<Vehicle> selectAll(Vehicle vehicle);
 
@@ -23,5 +23,5 @@ public interface VehicleService {
 
     void updateTypeByIds(List<Long> ids);
 
-    void monthlyCharge(Long userId, Long vehicleId);
+    void monthlyCharge(Long vehicleId);
 }

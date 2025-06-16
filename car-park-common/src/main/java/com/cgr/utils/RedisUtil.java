@@ -77,6 +77,7 @@ public class RedisUtil {
         chargeMap.put("perHour", charge.getPerHour());
         chargeMap.put("dailyCap", charge.getDailyCap());
         chargeMap.put("monthlyFee", charge.getMonthlyFee());
+        chargeMap.put("freeMinutes", charge.getFreeMinutes());
 
         redisTemplate.opsForHash().putAll(CHARGE_CONFIG, chargeMap);
     }
@@ -93,6 +94,7 @@ public class RedisUtil {
         Object perHour = chargeMap.get("perHour");
         Object dailyCap = chargeMap.get("dailyCap");
         Object monthlyFee = chargeMap.get("monthlyFee");
+        Object freeMinutes = chargeMap.get("freeMinutes");
 
         if (firstHour != null) {
             charge.setFirstHour(Double.valueOf(firstHour.toString()));
@@ -105,6 +107,9 @@ public class RedisUtil {
         }
         if (monthlyFee != null) {
             charge.setMonthlyFee(Double.valueOf(monthlyFee.toString()));
+        }
+        if (freeMinutes != null) {
+            charge.setFreeMinutes(Integer.valueOf(freeMinutes.toString()));
         }
 
         return charge;

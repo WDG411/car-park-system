@@ -2,7 +2,7 @@ package com.cgr.constant;
 
 
 // 车辆类型常量
-public class Vehicle {
+public class VehicleConstant {
 
     public static final int TYPE_INTERNAL = 1;   // 内部车
     public static final int TYPE_MONTHLY = 2;    // 月租车

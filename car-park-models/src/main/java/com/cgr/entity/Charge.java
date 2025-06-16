@@ -22,4 +22,6 @@ public class Charge implements Serializable {
     private Double dailyCap;
 
     private Double monthlyFee;
+
+    private Integer freeMinutes;
 }

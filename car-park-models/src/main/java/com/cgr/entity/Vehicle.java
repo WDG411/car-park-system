@@ -1,6 +1,8 @@
 package com.cgr.entity;
 
 
+import java.time.LocalDateTime;
+
 /**
  * 车辆信息
 */
@@ -22,6 +24,25 @@ public class Vehicle {
      * 4 黑名单
      */
     private int type;
+    //月卡时间
+    LocalDateTime startTime;
+    LocalDateTime endTime;
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 
     public Integer getId() {
         return id;
