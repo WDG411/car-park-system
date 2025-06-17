@@ -72,8 +72,14 @@
     </delete>
 
     <delete id="deleteBatch" parameterType="list">
+        DELETE FROM vehicle WHERE user_id IN
+        <foreach item="id" collection="userIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteBatchByVehicleIds">
         DELETE FROM vehicle WHERE id IN
-        <foreach item="id" collection="list" open="(" separator="," close=")">
+        <foreach item="id" index="idx" collection="vehicleIds" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>

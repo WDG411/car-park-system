@@ -11,6 +11,7 @@ import com.cgr.entity.Parking;
 import com.cgr.entity.ParkingLot;
 import com.cgr.entity.Pay;
 import com.cgr.exception.CustomException;
+import com.cgr.mapper.LocationMapper;
 import com.cgr.mapper.ParkingMapper;
 import com.cgr.mapper.VehicleMapper;
 import com.cgr.service.ParkingLotService;
@@ -43,6 +44,8 @@ public class ParkingServiceImpl implements ParkingService {
     private RedisUtil redisUtil;
     @Autowired
     private VehicleMapper vehicleMapper;
+    @Autowired
+    private LocationMapper locationMapper;
 
     /**
      * 新增
@@ -118,7 +121,7 @@ public class ParkingServiceImpl implements ParkingService {
 
         if (type == VehicleConstant.TYPE_INTERNAL) {
             //内部车
-            initPay(parking, 0.0);
+            initPay(parking, 0.0,true);
             updateParkingLotStatus(parking);
 
         } else if (type == VehicleConstant.TYPE_BLACKLIST) {
@@ -134,7 +137,7 @@ public class ParkingServiceImpl implements ParkingService {
             }
 
             //处在时间内
-            initPay(parking, 0.0);
+            initPay(parking, 0.0,true);
             updateParkingLotStatus(parking);
 
         } else {
@@ -150,13 +153,13 @@ public class ParkingServiceImpl implements ParkingService {
 
             // 免费时间内
             if (totalMinutes <= FREE_MINUTES) {
-                initPay(parking, price);
+                initPay(parking, price,true);
                 updateParkingLotStatus(parking);
                 return;
             }
             // 首小时内
             if(totalMinutes>FREE_MINUTES && totalMinutes<= 60){
-                initPay(parking, FIRST_HOUR);
+                initPay(parking, FIRST_HOUR,false);
                 updateParkingLotStatus(parking);
                 return;
             }
@@ -165,12 +168,21 @@ public class ParkingServiceImpl implements ParkingService {
 
             long totalDay = totalMinutes / 1440;    // 60 * 24
 
-            //不足一天
+            //不足一天 且超过首小时
             if(totalDay == 0 ){
-                price = totalMinutes / 60 * PRE_HOUR >= DAILY_CAP - FIRST_HOUR ? DAILY_CAP : totalMinutes / 60 * PRE_HOUR + FIRST_HOUR - PRE_HOUR;
-                initPay(parking, price);
+
+                long totalHour = totalMinutes / 60;
+                boolean flag = totalMinutes % 60 > 0 ? true : false;
+                //刚好整小时
+                if(!flag){
+                    price = totalHour * PRE_HOUR + FIRST_HOUR - PRE_HOUR >= DAILY_CAP ? DAILY_CAP : totalHour * PRE_HOUR + FIRST_HOUR - PRE_HOUR;
+                }else{
+                    price = totalHour * PRE_HOUR + FIRST_HOUR >= DAILY_CAP ? DAILY_CAP : totalHour * PRE_HOUR + FIRST_HOUR;
+                }
+                initPay(parking, price,false);
                 updateParkingLotStatus(parking);
                 return;
+
             }
 
             // 超过一天
@@ -182,16 +194,25 @@ public class ParkingServiceImpl implements ParkingService {
             long restMinutes = totalMinutes % 1440;
             if(restMinutes == 0){
                 //刚刚好是天数的整数倍
-                initPay(parking, price);
+                initPay(parking, price,false);
                 updateParkingLotStatus(parking);
                 return;
             }
 
-            long restHour = restMinutes / 60;
-            price += (restHour + 1) * PRE_HOUR >= DAILY_CAP ? DAILY_CAP : (restHour + 1) * PRE_HOUR;
+            //刚好是小时的整数倍
+            long restHours = restMinutes / 60;
+            if(restMinutes % 60 == 0){
+                price += restHours * PRE_HOUR >= DAILY_CAP ? DAILY_CAP : restHours * PRE_HOUR;
+                initPay(parking, price,false);
+                updateParkingLotStatus(parking);
+                return;
+            }
 
-            initPay(parking, price);
+            //不是小时的整数倍
+            price += (restHours + 1) * PRE_HOUR >= DAILY_CAP ? DAILY_CAP : (restHours + 1) * PRE_HOUR;
+            initPay(parking, price,false);
             updateParkingLotStatus(parking);
+
         }
 
     }
@@ -238,7 +259,7 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void initPay(Parking parking, Double price) {
+    public void initPay(Parking parking, Double price,Boolean isPay) {
         parking.setStatus("已出场");
         parkingMapper.updateById(parking);
         Pay pay = new Pay();
@@ -246,7 +267,11 @@ public class ParkingServiceImpl implements ParkingService {
         Long minutes = DateUtil.between(DateUtil.parse(pay.getStartTime()), DateUtil.parse(pay.getEndTime()), DateUnit.MINUTE);
         pay.setMinutes(minutes.intValue());
         pay.setPrice(price);
-        pay.setStatus("已缴费");
+        if(isPay == true){
+            pay.setStatus("已缴费");
+        }else{
+            pay.setStatus("未缴费");
+        }
         payService.add(pay);
     }
 
@@ -257,6 +282,7 @@ public class ParkingServiceImpl implements ParkingService {
         if (ObjUtil.isNotEmpty(parkingLot)) {
             parkingLot.setStatus("空闲");
             parkingLotService.updateById(parkingLot);
+            locationMapper.freeParkingLot(parking.getLocationId());
         }
     }
 }
