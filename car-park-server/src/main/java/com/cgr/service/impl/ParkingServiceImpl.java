@@ -153,7 +153,7 @@ public class ParkingServiceImpl implements ParkingService {
 
             // 免费时间内
             if (totalMinutes <= FREE_MINUTES) {
-                initPay(parking, price,true);
+                initPay(parking, price,false);
                 updateParkingLotStatus(parking);
                 return;
             }
